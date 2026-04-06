@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>מעקב ייצור</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #21262d;
+    --border: #30363d;
+    --accent: #f0a500;
+    --accent2: #e05c00;
+    --text: #e6edf3;
+    --text2: #8b949e;
+    --success: #3fb950;
+    --danger: #f85149;
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Heebo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-icon {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .header h1 { font-size: 18px; font-weight: 700; }
+  .header p { font-size: 12px; color: var(--text2); }
+
+  /* ── MAIN ── */
+  .main { padding: 20px 16px 100px; max-width: 480px; margin: 0 auto; }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    margin-bottom: 16px;
+    animation: fadeUp .3s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .card-title {
+    font-size: 13px; font-weight: 700; color: var(--text2);
+    text-transform: uppercase; letter-spacing: .05em;
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card-title span { color: var(--accent); }
+
+  /* ── SCAN BUTTON ── */
+  .scan-btn {
+    width: 100%; padding: 18px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none; border-radius: var(--radius);
+    color: #000; font-family: 'Heebo', sans-serif;
+    font-size: 17px; font-weight: 700;
+    cursor: pointer; display: flex; align-items: center;
+    justify-content: center; gap: 10px;
+    transition: opacity .15s, transform .1s;
+    margin-bottom: 10px;
+  }
+  .scan-btn:active { opacity: .85; transform: scale(.98); }
+
+  .manual-btn {
+    width: 100%; padding: 13px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text2); font-family: 'Heebo', sans-serif;
+    font-size: 14px; cursor: pointer;
+    transition: border-color .15s, color .15s;
+  }
+  .manual-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── INPUT ── */
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 13px; color: var(--text2); margin-bottom: 6px; font-weight: 500; }
+  .field input {
+    width: 100%; padding: 12px 14px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text);
+    font-family: 'Heebo', sans-serif; font-size: 15px;
+    transition: border-color .15s;
+    -webkit-appearance: none;
+  }
+  .field input:focus { outline: none; border-color: var(--accent); }
+  .field input[readonly] { opacity: .6; cursor: not-allowed; }
+
+  /* ── WO DISPLAY ── */
+  .wo-display {
+    background: var(--surface2);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .wo-display .label { font-size: 12px; color: var(--text2); }
+  .wo-display .value { font-size: 22px; font-weight: 900; color: var(--accent); }
+  .wo-display .clear-btn {
+    background: none; border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text2);
+    padding: 6px 12px; font-size: 12px; cursor: pointer;
+    font-family: 'Heebo', sans-serif;
+  }
+
+  /* ── INGREDIENT ROW ── */
+  .ing-row {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
+    animation: fadeUp .25s ease both;
+  }
+  .ing-name {
+    font-size: 15px; font-weight: 700; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .ing-name .qty-badge {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-size: 12px; font-weight: 400; color: var(--text2);
+  }
+  .ing-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  /* ── SUBMIT ── */
+  .submit-btn {
+    width: 100%; padding: 18px;
+    background: var(--success);
+    border: none; border-radius: var(--radius);
+    color: #fff; font-family: 'Heebo', sans-serif;
+    font-size: 17px; font-weight: 700;
+    cursor: pointer; display: flex; align-items: center;
+    justify-content: center; gap: 10px;
+    transition: opacity .15s, transform .1s;
+    margin-top: 8px;
+  }
+  .submit-btn:active { opacity: .85; transform: scale(.98); }
+  .submit-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+
+  /* ── CAMERA MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.85);
+    z-index: 200; display: flex;
+    flex-direction: column; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.hidden { display: none; }
+  .camera-box {
+    width: 100%; max-width: 400px;
+    background: var(--surface);
+    border-radius: 16px; overflow: hidden;
+    border: 2px solid var(--accent);
+  }
+  .camera-header {
+    padding: 14px 18px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .camera-header h3 { font-size: 16px; font-weight: 700; }
+  .close-cam {
+    background: none; border: none;
+    color: var(--text2); font-size: 22px; cursor: pointer;
+  }
+  #camera-viewport {
+    width: 100%; aspect-ratio: 4/3;
+    background: #000; position: relative; overflow: hidden;
+  }
+  #camera-viewport video { width: 100%; height: 100%; object-fit: cover; }
+  .scan-line {
+    position: absolute; left: 10%; right: 10%; top: 50%;
+    height: 2px; background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: scanMove 1.8s ease-in-out infinite;
+  }
+  @keyframes scanMove {
+    0%,100% { top: 30%; } 50% { top: 70%; }
+  }
+  .camera-hint { padding: 14px; text-align: center; font-size: 13px; color: var(--text2); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 20px;
+    font-size: 14px; font-weight: 500;
+    opacity: 0; transition: all .3s; pointer-events: none;
+    white-space: nowrap; z-index: 300;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast.success { border-color: var(--success); color: var(--success); }
+  .toast.error   { border-color: var(--danger);  color: var(--danger);  }
+
+  /* ── LOADER ── */
+  .loader {
+    display: inline-block; width: 18px; height: 18px;
+    border: 2px solid rgba(255,255,255,.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── EMPTY STATE ── */
+  .empty {
+    text-align: center; padding: 30px 20px;
+    color: var(--text2); font-size: 14px;
+  }
+  .empty .icon { font-size: 40px; margin-bottom: 10px; }
+
+  /* ── STEP INDICATOR ── */
+  .steps {
+    display: flex; gap: 6px; margin-bottom: 20px;
+  }
+  .step {
+    flex: 1; height: 4px; border-radius: 2px;
+    background: var(--border); transition: background .3s;
+  }
+  .step.active { background: var(--accent); }
+  .step.done   { background: var(--success); }
+
+  /* manual input area */
+  .manual-area {
+    display: flex; gap: 8px;
+  }
+  .manual-area input {
+    flex: 1; padding: 12px 14px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text);
+    font-family: 'Heebo', sans-serif; font-size: 15px;
+  }
+  .manual-area input:focus { outline: none; border-color: var(--accent); }
+  .manual-area button {
+    padding: 12px 16px;
+    background: var(--accent); border: none;
+    border-radius: 8px; color: #000;
+    font-family: 'Heebo', sans-serif; font-weight: 700;
+    cursor: pointer; white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-icon">🏭</div>
+  <div>
+    <h1>מעקב ייצור</h1>
+    <p>סריקה ותיעוד חומרי גלם</p>
+  </div>
+</div>
+
+<!-- CAMERA MODAL -->
+<div class="modal-overlay hidden" id="cameraModal">
+  <div class="camera-box">
+    <div class="camera-header">
+      <h3>📷 סרוק ברקוד</h3>
+      <button class="close-cam" onclick="closeCamera()">✕</button>
+    </div>
+    <div id="camera-viewport">
+      <div class="scan-line"></div>
+    </div>
+    <div class="camera-hint">כוון את הברקוד לתוך המסגרת</div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- STEP INDICATOR -->
+  <div class="steps">
+    <div class="step active" id="step1"></div>
+    <div class="step" id="step2"></div>
+    <div class="step" id="step3"></div>
+  </div>
+
+  <!-- STEP 1: SCAN -->
+  <div id="sectionScan">
+    <div class="card">
+      <div class="card-title"><span>01</span> סריקת פקודת עבודה</div>
+      <button class="scan-btn" onclick="startCamera()">
+        <span>📷</span> סרוק ברקוד
+      </button>
+      <button class="manual-btn" onclick="toggleManual()">
+        ✏️ הזנה ידנית
+      </button>
+      <div id="manualArea" style="display:none; margin-top:12px;">
+        <div class="manual-area">
+          <input type="text" id="manualWO" placeholder="מספר פקודת עבודה" inputmode="text">
+          <button onclick="loadWorkOrder(document.getElementById('manualWO').value)">טען</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: PRODUCTION DATE -->
+  <div id="sectionDate" style="display:none;">
+    <div class="wo-display">
+      <div>
+        <div class="label">פקודת עבודה</div>
+        <div class="value" id="woLabel">-</div>
+      </div>
+      <button class="clear-btn" onclick="resetAll()">איפוס</button>
+    </div>
+    <div class="card">
+      <div class="card-title"><span>02</span> תאריך ייצור</div>
+      <div class="field">
+        <label>תאריך ייצור (DD/MM/YYYY)</label>
+        <input type="text" id="productionDate" placeholder="06/04/2026" inputmode="numeric" maxlength="10" oninput="formatDateInput(this);checkReady()">
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: INGREDIENTS -->
+  <div id="sectionIngredients" style="display:none;">
+    <div class="card">
+      <div class="card-title"><span>03</span> חומרי גלם</div>
+      <div id="ingredientsList">
+        <div class="empty"><div class="icon">⏳</div>טוען נתונים...</div>
+      </div>
+    </div>
+    <button class="submit-btn" id="submitBtn" onclick="submitData()" disabled>
+      <span>✅</span> שמור רישום
+    </button>
+  </div>
+
+</div>
+
+<script>
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxfW9lOqhZW8--XFPYDmb_PX7CZQmi9CjK6gQwjgdoIkUErYSbHt44no9siTGkL-0EU/exec';
+
+let currentWO = null;
+let ingredients = [];
+let scannerRunning = false;
+
+// ── STEPS ──
+function setStep(n) {
+  [1,2,3].forEach(i => {
+    const el = document.getElementById('step'+i);
+    el.className = 'step' + (i < n ? ' done' : i === n ? ' active' : '');
+  });
+}
+
+// ── TOAST ──
+function toast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  setTimeout(() => t.className = 'toast', 2800);
+}
+
+// ── CAMERA ──
+function startCamera() {
+  document.getElementById('cameraModal').classList.remove('hidden');
+  Quagga.init({
+    inputStream: {
+      name: 'Live',
+      type: 'LiveStream',
+      target: document.getElementById('camera-viewport'),
+      constraints: { facingMode: 'environment' }
+    },
+    decoder: {
+      readers: ['code_128_reader','ean_reader','code_39_reader','codabar_reader','upc_reader']
+    }
+  }, err => {
+    if (err) {
+      closeCamera();
+      toast('שגיאת מצלמה – נסה הזנה ידנית', 'error');
+      return;
+    }
+    Quagga.start();
+    scannerRunning = true;
+  });
+
+  Quagga.onDetected(result => {
+    const code = result.codeResult.code;
+    if (code) {
+      closeCamera();
+      loadWorkOrder(code);
+    }
+  });
+}
+
+function closeCamera() {
+  if (scannerRunning) { Quagga.stop(); scannerRunning = false; }
+  document.getElementById('cameraModal').classList.add('hidden');
+}
+
+function toggleManual() {
+  const a = document.getElementById('manualArea');
+  a.style.display = a.style.display === 'none' ? 'block' : 'none';
+}
+
+// ── LOAD WORK ORDER ──
+async function loadWorkOrder(wo) {
+  wo = wo.trim();
+  if (!wo) { toast('הכנס מספר פקודת עבודה', 'error'); return; }
+
+  toast('⏳ טוען נתונים...');
+
+  try {
+    const url = `${SHEET_URL}?action=getIngredients&workOrderId=${encodeURIComponent(wo)}`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (!data.ingredients || data.ingredients.length === 0) {
+      toast('לא נמצאו חומרי גלם לפקודה זו', 'error');
+      return;
+    }
+
+    currentWO = wo;
+    ingredients = data.ingredients;
+
+    // Show WO
+    document.getElementById('woLabel').textContent = wo;
+
+    // Set today as default production date in DD/MM/YYYY
+    const now = new Date();
+    const dd = String(now.getDate()).padStart(2,'0');
+    const mm = String(now.getMonth()+1).padStart(2,'0');
+    const yyyy = now.getFullYear();
+    document.getElementById('productionDate').value = `${dd}/${mm}/${yyyy}`;
+
+    // Show sections
+    document.getElementById('sectionDate').style.display = 'block';
+    document.getElementById('sectionIngredients').style.display = 'block';
+
+    // Build ingredient rows
+    renderIngredients();
+    setStep(2);
+    toast('✅ נטענו ' + ingredients.length + ' חומרי גלם', 'success');
+
+    // Scroll to date
+    document.getElementById('sectionDate').scrollIntoView({ behavior: 'smooth' });
+
+  } catch(e) {
+    toast('שגיאת תקשורת עם הגיליון', 'error');
+    console.error(e);
+  }
+}
+
+function renderIngredients() {
+  const list = document.getElementById('ingredientsList');
+  list.innerHTML = '';
+
+  ingredients.forEach((ing, i) => {
+    const div = document.createElement('div');
+    div.className = 'ing-row';
+    div.style.animationDelay = (i * 0.06) + 's';
+    div.innerHTML = `
+      <div class="ing-name">
+        🧪 ${ing.material}
+        <span class="qty-badge">נדרש: ${ing.requiredQty}</span>
+      </div>
+      <div class="ing-fields">
+        <div class="field" style="margin:0">
+          <label>כמות בפועל</label>
+          <input type="number" id="qty_${i}" placeholder="כמות"
+            inputmode="decimal" min="0" step="0.01"
+            value="${ing.requiredQty}"
+            oninput="checkReady()">
+        </div>
+        <div class="field" style="margin:0">
+          <label>תאריך תוקף (DD/MM/YYYY)</label>
+          <input type="text" id="exp_${i}" placeholder="06/04/2026" inputmode="numeric" maxlength="10" oninput="formatDateInput(this);checkReady()">
+        </div>
+      </div>
+    `;
+    list.appendChild(div);
+  });
+
+  checkReady();
+  setStep(3);
+}
+
+// ── DATE HELPERS ──
+function formatDateInput(el) {
+  let v = el.value.replace(/[^0-9]/g, '');
+  if (v.length >= 3 && v.length <= 4) v = v.slice(0,2) + '/' + v.slice(2);
+  else if (v.length >= 5) v = v.slice(0,2) + '/' + v.slice(2,4) + '/' + v.slice(4,8);
+  el.value = v;
+}
+
+function parseDate(str) {
+  // accepts DD/MM/YYYY
+  const parts = str.split('/');
+  if (parts.length !== 3) return null;
+  const [d, m, y] = parts;
+  if (d.length !== 2 || m.length !== 2 || y.length !== 4) return null;
+  return `${y}-${m}-${d}`;
+}
+
+function checkReady() {
+  const btn = document.getElementById('submitBtn');
+  const prodDate = document.getElementById('productionDate').value;
+  if (!prodDate || prodDate.length < 10) { btn.disabled = true; return; }
+
+  const allFilled = ingredients.every((_, i) => {
+    const qty = document.getElementById('qty_'+i)?.value;
+    const exp = document.getElementById('exp_'+i)?.value;
+    return qty && exp && exp.length === 10;
+  });
+  btn.disabled = !allFilled;
+}
+
+// ── SUBMIT ──
+async function submitData() {
+  const prodDateRaw = document.getElementById('productionDate').value;
+  const prodDate = parseDate(prodDateRaw);
+  if (!prodDate) { toast('תאריך ייצור לא תקין – השתמש בפורמט DD/MM/YYYY', 'error'); return; }
+
+  const payload = {
+    action: 'saveProduction',
+    workOrderId: currentWO,
+    productionDate: prodDateRaw,
+    ingredients: ingredients.map((ing, i) => ({
+      material: ing.material,
+      qty: document.getElementById('qty_'+i).value,
+      expiryDate: document.getElementById('exp_'+i).value
+    }))
+  };
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="loader"></div> שומר...';
+
+  try {
+    const res = await fetch(SHEET_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      toast('✅ נשמר בהצלחה בגיליון!', 'success');
+      setTimeout(resetAll, 1800);
+    } else {
+      toast('שגיאה בשמירה', 'error');
+      btn.disabled = false;
+      btn.innerHTML = '<span>✅</span> שמור רישום';
+    }
+  } catch(e) {
+    toast('שגיאת תקשורת', 'error');
+    btn.disabled = false;
+    btn.innerHTML = '<span>✅</span> שמור רישום';
+  }
+}
+
+// ── RESET ──
+function resetAll() {
+  currentWO = null;
+  ingredients = [];
+  document.getElementById('sectionDate').style.display = 'none';
+  document.getElementById('sectionIngredients').style.display = 'none';
+  document.getElementById('ingredientsList').innerHTML = '';
+  document.getElementById('manualArea').style.display = 'none';
+  document.getElementById('manualWO').value = '';
+  document.getElementById('submitBtn').innerHTML = '<span>✅</span> שמור רישום';
+  setStep(1);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Auto-check production date changes
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('productionDate').addEventListener('input', checkReady);
+});
+</script>
+</body>
+</html>
