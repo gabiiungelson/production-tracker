@@ -5,23 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>מעקב ייצור</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
 <style>
   :root {
-    --bg: #0d1117;
-    --surface: #161b22;
-    --surface2: #21262d;
-    --border: #30363d;
-    --accent: #f0a500;
-    --accent2: #e05c00;
-    --text: #e6edf3;
-    --text2: #8b949e;
-    --success: #3fb950;
-    --danger: #f85149;
+    --bg: #f0ede8;
+    --surface: #ffffff;
+    --surface2: #f7f4f0;
+    --border: #ddd8d0;
+    --accent: #c47e00;
+    --accent2: #a85c00;
+    --text: #1a1a1a;
+    --text2: #6b6560;
+    --success: #2d8a4e;
+    --danger: #c0392b;
     --radius: 12px;
   }
 
@@ -35,17 +35,13 @@
     overflow-x: hidden;
   }
 
-  /* ── HEADER ── */
   .header {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
     padding: 14px 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    display: flex; align-items: center; gap: 12px;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
   }
   .header-icon {
     width: 38px; height: 38px;
@@ -54,23 +50,21 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 18px;
   }
-  .header h1 { font-size: 18px; font-weight: 700; }
-  .header p { font-size: 12px; color: var(--text2); }
+  .header h1 { font-size: 18px; font-weight: 700; color: var(--text); }
+  .header p  { font-size: 12px; color: var(--text2); }
 
-  /* ── MAIN ── */
-  .main { padding: 20px 16px 100px; max-width: 480px; margin: 0 auto; }
+  .main { padding: 20px 16px 100px; max-width: 520px; margin: 0 auto; }
 
-  /* ── CARD ── */
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 18px;
-    margin-bottom: 16px;
+    padding: 18px; margin-bottom: 16px;
     animation: fadeUp .3s ease both;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
   }
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
+    from { opacity: 0; transform: translateY(14px); }
     to   { opacity: 1; transform: translateY(0); }
   }
   .card-title {
@@ -81,12 +75,11 @@
   }
   .card-title span { color: var(--accent); }
 
-  /* ── SCAN BUTTON ── */
   .scan-btn {
     width: 100%; padding: 18px;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
     border: none; border-radius: var(--radius);
-    color: #000; font-family: 'Heebo', sans-serif;
+    color: #fff; font-family: 'Heebo', sans-serif;
     font-size: 17px; font-weight: 700;
     cursor: pointer; display: flex; align-items: center;
     justify-content: center; gap: 10px;
@@ -106,27 +99,23 @@
   }
   .manual-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* ── INPUT ── */
-  .field { margin-bottom: 14px; }
-  .field label { display: block; font-size: 13px; color: var(--text2); margin-bottom: 6px; font-weight: 500; }
+  .field { margin-bottom: 12px; }
+  .field label { display: block; font-size: 13px; color: var(--text2); margin-bottom: 5px; font-weight: 600; }
   .field input {
-    width: 100%; padding: 12px 14px;
+    width: 100%; padding: 11px 14px;
     background: var(--surface2); border: 1px solid var(--border);
     border-radius: 8px; color: var(--text);
     font-family: 'Heebo', sans-serif; font-size: 15px;
     transition: border-color .15s;
     -webkit-appearance: none;
   }
-  .field input:focus { outline: none; border-color: var(--accent); }
-  .field input[readonly] { opacity: .6; cursor: not-allowed; }
+  .field input:focus { outline: none; border-color: var(--accent); background: #fff; }
 
-  /* ── WO DISPLAY ── */
   .wo-display {
-    background: var(--surface2);
-    border: 1px solid var(--accent);
+    background: #fff8ee;
+    border: 1.5px solid var(--accent);
     border-radius: var(--radius);
-    padding: 14px 18px;
-    margin-bottom: 16px;
+    padding: 14px 18px; margin-bottom: 16px;
     display: flex; align-items: center; justify-content: space-between;
   }
   .wo-display .label { font-size: 12px; color: var(--text2); }
@@ -143,24 +132,56 @@
     background: var(--surface2);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 14px;
-    margin-bottom: 10px;
+    padding: 14px; margin-bottom: 12px;
     animation: fadeUp .25s ease both;
   }
   .ing-name {
-    font-size: 15px; font-weight: 700; margin-bottom: 10px;
-    display: flex; align-items: center; gap: 8px;
+    font-size: 15px; font-weight: 700; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
   }
   .ing-name .qty-badge {
-    background: var(--surface);
+    background: #fff;
     border: 1px solid var(--border);
     border-radius: 6px;
     padding: 2px 8px;
     font-size: 12px; font-weight: 400; color: var(--text2);
   }
-  .ing-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .batch-entry {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px; margin-bottom: 8px;
+  }
+  .batch-label {
+    font-size: 11px; font-weight: 700; color: var(--text2);
+    margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;
+  }
+  .batch-label .required-tag {
+    background: #fff3e0; color: var(--accent);
+    border: 1px solid #ffe0a0;
+    border-radius: 4px; padding: 1px 6px; font-size: 10px;
+  }
+  .batch-label .optional-tag {
+    background: #f0f0f0; color: #999;
+    border: 1px solid #ddd;
+    border-radius: 4px; padding: 1px 6px; font-size: 10px;
+  }
+  .remove-batch {
+    background: none; border: none; color: var(--danger);
+    font-size: 16px; cursor: pointer; padding: 0 4px;
+  }
+  .ing-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .add-batch-btn {
+    width: 100%; padding: 8px;
+    background: transparent;
+    border: 1px dashed var(--border);
+    border-radius: 8px; color: var(--accent);
+    font-family: 'Heebo', sans-serif; font-size: 13px;
+    cursor: pointer; margin-top: 4px;
+    transition: background .15s;
+  }
+  .add-batch-btn:hover { background: #fff8ee; }
 
-  /* ── SUBMIT ── */
   .submit-btn {
     width: 100%; padding: 18px;
     background: var(--success);
@@ -171,14 +192,14 @@
     justify-content: center; gap: 10px;
     transition: opacity .15s, transform .1s;
     margin-top: 8px;
+    box-shadow: 0 2px 8px rgba(45,138,78,0.25);
   }
   .submit-btn:active { opacity: .85; transform: scale(.98); }
-  .submit-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+  .submit-btn:disabled { opacity: .35; cursor: not-allowed; transform: none; box-shadow: none; }
 
-  /* ── CAMERA MODAL ── */
   .modal-overlay {
     position: fixed; inset: 0;
-    background: rgba(0,0,0,.85);
+    background: rgba(0,0,0,.75);
     z-index: 200; display: flex;
     flex-direction: column; align-items: center; justify-content: center;
     padding: 20px;
@@ -195,14 +216,8 @@
     display: flex; align-items: center; justify-content: space-between;
   }
   .camera-header h3 { font-size: 16px; font-weight: 700; }
-  .close-cam {
-    background: none; border: none;
-    color: var(--text2); font-size: 22px; cursor: pointer;
-  }
-  #camera-viewport {
-    width: 100%; aspect-ratio: 4/3;
-    background: #000; position: relative; overflow: hidden;
-  }
+  .close-cam { background: none; border: none; color: var(--text2); font-size: 22px; cursor: pointer; }
+  #camera-viewport { width: 100%; aspect-ratio: 4/3; background: #000; position: relative; overflow: hidden; }
   #camera-viewport video { width: 100%; height: 100%; object-fit: cover; }
   .scan-line {
     position: absolute; left: 10%; right: 10%; top: 50%;
@@ -210,56 +225,41 @@
     box-shadow: 0 0 8px var(--accent);
     animation: scanMove 1.8s ease-in-out infinite;
   }
-  @keyframes scanMove {
-    0%,100% { top: 30%; } 50% { top: 70%; }
-  }
+  @keyframes scanMove { 0%,100% { top: 30%; } 50% { top: 70%; } }
   .camera-hint { padding: 14px; text-align: center; font-size: 13px; color: var(--text2); }
 
-  /* ── TOAST ── */
   .toast {
     position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px);
-    background: var(--surface2); border: 1px solid var(--border);
+    background: var(--surface); border: 1px solid var(--border);
     border-radius: 10px; padding: 12px 20px;
     font-size: 14px; font-weight: 500;
     opacity: 0; transition: all .3s; pointer-events: none;
     white-space: nowrap; z-index: 300;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    color: var(--text);
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   .toast.success { border-color: var(--success); color: var(--success); }
   .toast.error   { border-color: var(--danger);  color: var(--danger);  }
 
-  /* ── LOADER ── */
   .loader {
     display: inline-block; width: 18px; height: 18px;
-    border: 2px solid rgba(255,255,255,.3);
+    border: 2px solid rgba(255,255,255,.4);
     border-top-color: #fff;
     border-radius: 50%;
     animation: spin .7s linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ── EMPTY STATE ── */
-  .empty {
-    text-align: center; padding: 30px 20px;
-    color: var(--text2); font-size: 14px;
-  }
+  .empty { text-align: center; padding: 30px 20px; color: var(--text2); font-size: 14px; }
   .empty .icon { font-size: 40px; margin-bottom: 10px; }
 
-  /* ── STEP INDICATOR ── */
-  .steps {
-    display: flex; gap: 6px; margin-bottom: 20px;
-  }
-  .step {
-    flex: 1; height: 4px; border-radius: 2px;
-    background: var(--border); transition: background .3s;
-  }
+  .steps { display: flex; gap: 6px; margin-bottom: 20px; }
+  .step { flex: 1; height: 4px; border-radius: 2px; background: var(--border); transition: background .3s; }
   .step.active { background: var(--accent); }
   .step.done   { background: var(--success); }
 
-  /* manual input area */
-  .manual-area {
-    display: flex; gap: 8px;
-  }
+  .manual-area { display: flex; gap: 8px; }
   .manual-area input {
     flex: 1; padding: 12px 14px;
     background: var(--surface2); border: 1px solid var(--border);
@@ -270,7 +270,7 @@
   .manual-area button {
     padding: 12px 16px;
     background: var(--accent); border: none;
-    border-radius: 8px; color: #000;
+    border-radius: 8px; color: #fff;
     font-family: 'Heebo', sans-serif; font-weight: 700;
     cursor: pointer; white-space: nowrap;
   }
@@ -278,7 +278,6 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div class="header-icon">🏭</div>
   <div>
@@ -287,43 +286,31 @@
   </div>
 </div>
 
-<!-- CAMERA MODAL -->
 <div class="modal-overlay hidden" id="cameraModal">
   <div class="camera-box">
     <div class="camera-header">
       <h3>📷 סרוק ברקוד</h3>
       <button class="close-cam" onclick="closeCamera()">✕</button>
     </div>
-    <div id="camera-viewport">
-      <div class="scan-line"></div>
-    </div>
+    <div id="camera-viewport"><div class="scan-line"></div></div>
     <div class="camera-hint">כוון את הברקוד לתוך המסגרת</div>
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- MAIN -->
 <div class="main">
-
-  <!-- STEP INDICATOR -->
   <div class="steps">
     <div class="step active" id="step1"></div>
     <div class="step" id="step2"></div>
     <div class="step" id="step3"></div>
   </div>
 
-  <!-- STEP 1: SCAN -->
   <div id="sectionScan">
     <div class="card">
       <div class="card-title"><span>01</span> סריקת פקודת עבודה</div>
-      <button class="scan-btn" onclick="startCamera()">
-        <span>📷</span> סרוק ברקוד
-      </button>
-      <button class="manual-btn" onclick="toggleManual()">
-        ✏️ הזנה ידנית
-      </button>
+      <button class="scan-btn" onclick="startCamera()"><span>📷</span> סרוק ברקוד</button>
+      <button class="manual-btn" onclick="toggleManual()">✏️ הזנה ידנית</button>
       <div id="manualArea" style="display:none; margin-top:12px;">
         <div class="manual-area">
           <input type="text" id="manualWO" placeholder="מספר פקודת עבודה" inputmode="text">
@@ -333,7 +320,6 @@
     </div>
   </div>
 
-  <!-- STEP 2: PRODUCTION DATE -->
   <div id="sectionDate" style="display:none;">
     <div class="wo-display">
       <div>
@@ -346,12 +332,13 @@
       <div class="card-title"><span>02</span> תאריך ייצור</div>
       <div class="field">
         <label>תאריך ייצור (DD/MM/YYYY)</label>
-        <input type="text" id="productionDate" placeholder="06/04/2026" inputmode="numeric" maxlength="10" oninput="formatDateInput(this);checkReady()">
+        <input type="text" id="productionDate" placeholder="06/04/2026"
+          inputmode="numeric" maxlength="10"
+          oninput="formatDateInput(this); checkReady()">
       </div>
     </div>
   </div>
 
-  <!-- STEP 3: INGREDIENTS -->
   <div id="sectionIngredients" style="display:none;">
     <div class="card">
       <div class="card-title"><span>03</span> חומרי גלם</div>
@@ -363,7 +350,6 @@
       <span>✅</span> שמור רישום
     </button>
   </div>
-
 </div>
 
 <script>
@@ -373,7 +359,6 @@ let currentWO = null;
 let ingredients = [];
 let scannerRunning = false;
 
-// ── STEPS ──
 function setStep(n) {
   [1,2,3].forEach(i => {
     const el = document.getElementById('step'+i);
@@ -381,7 +366,6 @@ function setStep(n) {
   });
 }
 
-// ── TOAST ──
 function toast(msg, type='') {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -389,35 +373,23 @@ function toast(msg, type='') {
   setTimeout(() => t.className = 'toast', 2800);
 }
 
-// ── CAMERA ──
 function startCamera() {
   document.getElementById('cameraModal').classList.remove('hidden');
   Quagga.init({
     inputStream: {
-      name: 'Live',
-      type: 'LiveStream',
+      name: 'Live', type: 'LiveStream',
       target: document.getElementById('camera-viewport'),
       constraints: { facingMode: 'environment' }
     },
-    decoder: {
-      readers: ['code_128_reader','ean_reader','code_39_reader','codabar_reader','upc_reader']
-    }
+    decoder: { readers: ['code_128_reader','ean_reader','code_39_reader','codabar_reader','upc_reader'] }
   }, err => {
-    if (err) {
-      closeCamera();
-      toast('שגיאת מצלמה – נסה הזנה ידנית', 'error');
-      return;
-    }
+    if (err) { closeCamera(); toast('שגיאת מצלמה – נסה הזנה ידנית', 'error'); return; }
     Quagga.start();
     scannerRunning = true;
   });
-
   Quagga.onDetected(result => {
     const code = result.codeResult.code;
-    if (code) {
-      closeCamera();
-      loadWorkOrder(code);
-    }
+    if (code) { closeCamera(); loadWorkOrder(code); }
   });
 }
 
@@ -431,48 +403,33 @@ function toggleManual() {
   a.style.display = a.style.display === 'none' ? 'block' : 'none';
 }
 
-// ── LOAD WORK ORDER ──
 async function loadWorkOrder(wo) {
   wo = wo.trim();
   if (!wo) { toast('הכנס מספר פקודת עבודה', 'error'); return; }
-
   toast('⏳ טוען נתונים...');
-
   try {
     const url = `${SHEET_URL}?action=getIngredients&workOrderId=${encodeURIComponent(wo)}`;
     const res = await fetch(url);
     const data = await res.json();
-
     if (!data.ingredients || data.ingredients.length === 0) {
-      toast('לא נמצאו חומרי גלם לפקודה זו', 'error');
-      return;
+      toast('לא נמצאו חומרי גלם לפקודה זו', 'error'); return;
     }
-
     currentWO = wo;
     ingredients = data.ingredients;
-
-    // Show WO
     document.getElementById('woLabel').textContent = wo;
 
-    // Set today as default production date in DD/MM/YYYY
     const now = new Date();
     const dd = String(now.getDate()).padStart(2,'0');
     const mm = String(now.getMonth()+1).padStart(2,'0');
     const yyyy = now.getFullYear();
     document.getElementById('productionDate').value = `${dd}/${mm}/${yyyy}`;
 
-    // Show sections
     document.getElementById('sectionDate').style.display = 'block';
     document.getElementById('sectionIngredients').style.display = 'block';
-
-    // Build ingredient rows
     renderIngredients();
     setStep(2);
     toast('✅ נטענו ' + ingredients.length + ' חומרי גלם', 'success');
-
-    // Scroll to date
     document.getElementById('sectionDate').scrollIntoView({ behavior: 'smooth' });
-
   } catch(e) {
     toast('שגיאת תקשורת עם הגיליון', 'error');
     console.error(e);
@@ -482,38 +439,86 @@ async function loadWorkOrder(wo) {
 function renderIngredients() {
   const list = document.getElementById('ingredientsList');
   list.innerHTML = '';
-
   ingredients.forEach((ing, i) => {
     const div = document.createElement('div');
     div.className = 'ing-row';
     div.style.animationDelay = (i * 0.06) + 's';
+    div.id = `ing_row_${i}`;
     div.innerHTML = `
       <div class="ing-name">
         🧪 ${ing.material}
         <span class="qty-badge">נדרש: ${ing.requiredQty}</span>
       </div>
-      <div class="ing-fields">
-        <div class="field" style="margin:0">
-          <label>כמות בפועל</label>
-          <input type="number" id="qty_${i}" placeholder="כמות"
-            inputmode="decimal" min="0" step="0.01"
-            value="${ing.requiredQty}"
-            oninput="checkReady()">
-        </div>
-        <div class="field" style="margin:0">
-          <label>תאריך תוקף (DD/MM/YYYY)</label>
-          <input type="text" id="exp_${i}" placeholder="06/04/2026" inputmode="numeric" maxlength="10" oninput="formatDateInput(this);checkReady()">
+      <div id="batches_${i}">
+        <div class="batch-entry" id="batch_${i}_0">
+          <div class="batch-label">
+            <span>אצווה 1</span>
+            <span class="required-tag">חובה</span>
+          </div>
+          <div class="ing-fields">
+            <div class="field" style="margin:0">
+              <label>כמות בפועל</label>
+              <input type="number" id="qty_${i}_0" placeholder="כמות"
+                inputmode="decimal" min="0" step="0.01"
+                value="${ing.requiredQty}"
+                oninput="checkReady()">
+            </div>
+            <div class="field" style="margin:0">
+              <label>תאריך תוקף</label>
+              <input type="text" id="exp_${i}_0" placeholder="DD/MM/YYYY"
+                inputmode="numeric" maxlength="10"
+                oninput="formatDateInput(this); checkReady()">
+            </div>
+          </div>
         </div>
       </div>
+      <button class="add-batch-btn" onclick="addBatch(${i})">+ הוסף אצווה נוספת</button>
     `;
     list.appendChild(div);
   });
-
   checkReady();
   setStep(3);
 }
 
-// ── DATE HELPERS ──
+function addBatch(ingIdx) {
+  const container = document.getElementById(`batches_${ingIdx}`);
+  const batchNum = container.children.length;
+  const div = document.createElement('div');
+  div.className = 'batch-entry';
+  div.id = `batch_${ingIdx}_${batchNum}`;
+  div.innerHTML = `
+    <div class="batch-label">
+      <span>אצווה ${batchNum + 1}</span>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span class="optional-tag">רשות</span>
+        <button class="remove-batch" onclick="removeBatch(${ingIdx}, ${batchNum})">✕</button>
+      </div>
+    </div>
+    <div class="ing-fields">
+      <div class="field" style="margin:0">
+        <label>כמות בפועל</label>
+        <input type="number" id="qty_${ingIdx}_${batchNum}" placeholder="כמות"
+          inputmode="decimal" min="0" step="0.01"
+          oninput="checkReady()">
+      </div>
+      <div class="field" style="margin:0">
+        <label>תאריך תוקף</label>
+        <input type="text" id="exp_${ingIdx}_${batchNum}" placeholder="DD/MM/YYYY"
+          inputmode="numeric" maxlength="10"
+          oninput="formatDateInput(this); checkReady()">
+      </div>
+    </div>
+  `;
+  container.appendChild(div);
+  checkReady();
+}
+
+function removeBatch(ingIdx, batchNum) {
+  const el = document.getElementById(`batch_${ingIdx}_${batchNum}`);
+  if (el) el.remove();
+  checkReady();
+}
+
 function formatDateInput(el) {
   let v = el.value.replace(/[^0-9]/g, '');
   if (v.length >= 3 && v.length <= 4) v = v.slice(0,2) + '/' + v.slice(2);
@@ -522,7 +527,6 @@ function formatDateInput(el) {
 }
 
 function parseDate(str) {
-  // accepts DD/MM/YYYY
   const parts = str.split('/');
   if (parts.length !== 3) return null;
   const [d, m, y] = parts;
@@ -533,31 +537,46 @@ function parseDate(str) {
 function checkReady() {
   const btn = document.getElementById('submitBtn');
   const prodDate = document.getElementById('productionDate').value;
-  if (!prodDate || prodDate.length < 10) { btn.disabled = true; return; }
+  if (!prodDate || prodDate.length < 6) { btn.disabled = true; return; }
 
+  // Only check first batch (required) for each ingredient
   const allFilled = ingredients.every((_, i) => {
-    const qty = document.getElementById('qty_'+i)?.value;
-    const exp = document.getElementById('exp_'+i)?.value;
-    return qty && exp && exp.length === 10;
+    const qty = document.getElementById(`qty_${i}_0`)?.value;
+    const exp = document.getElementById(`exp_${i}_0`)?.value;
+    return qty && qty.length > 0 && exp && exp.length >= 6;
   });
   btn.disabled = !allFilled;
 }
 
-// ── SUBMIT ──
 async function submitData() {
   const prodDateRaw = document.getElementById('productionDate').value;
-  const prodDate = parseDate(prodDateRaw);
-  if (!prodDate) { toast('תאריך ייצור לא תקין – השתמש בפורמט DD/MM/YYYY', 'error'); return; }
+  if (!prodDateRaw || prodDateRaw.length < 6) {
+    toast('הכנס תאריך ייצור', 'error'); return;
+  }
+
+  // Build rows – one row per batch per ingredient
+  const rows = [];
+  ingredients.forEach((ing, i) => {
+    const container = document.getElementById(`batches_${i}`);
+    const batches = container.querySelectorAll('.batch-entry');
+    batches.forEach((_, b) => {
+      const qty = document.getElementById(`qty_${i}_${b}`)?.value;
+      const exp = document.getElementById(`exp_${i}_${b}`)?.value;
+      // Skip empty optional batches
+      if (b > 0 && (!qty || !exp)) return;
+      rows.push({
+        material: ing.material,
+        qty: qty || '',
+        expiryDate: exp || ''
+      });
+    });
+  });
 
   const payload = {
     action: 'saveProduction',
     workOrderId: currentWO,
     productionDate: prodDateRaw,
-    ingredients: ingredients.map((ing, i) => ({
-      material: ing.material,
-      qty: document.getElementById('qty_'+i).value,
-      expiryDate: document.getElementById('exp_'+i).value
-    }))
+    ingredients: rows
   };
 
   const btn = document.getElementById('submitBtn');
@@ -565,14 +584,10 @@ async function submitData() {
   btn.innerHTML = '<div class="loader"></div> שומר...';
 
   try {
-    const res = await fetch(SHEET_URL, {
-      method: 'POST',
-      body: JSON.stringify(payload)
-    });
+    const res = await fetch(SHEET_URL, { method: 'POST', body: JSON.stringify(payload) });
     const data = await res.json();
-
     if (data.success) {
-      toast('✅ נשמר בהצלחה בגיליון!', 'success');
+      toast('✅ נשמר בהצלחה!', 'success');
       setTimeout(resetAll, 1800);
     } else {
       toast('שגיאה בשמירה', 'error');
@@ -586,7 +601,6 @@ async function submitData() {
   }
 }
 
-// ── RESET ──
 function resetAll() {
   currentWO = null;
   ingredients = [];
@@ -600,7 +614,6 @@ function resetAll() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Auto-check production date changes
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('productionDate').addEventListener('input', checkReady);
 });
