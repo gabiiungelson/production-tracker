@@ -524,6 +524,29 @@ function formatDateInput(el) {
   if (v.length >= 3 && v.length <= 4) v = v.slice(0,2) + '/' + v.slice(2);
   else if (v.length >= 5) v = v.slice(0,2) + '/' + v.slice(2,4) + '/' + v.slice(4,8);
   el.value = v;
+
+  // Validate expiry date is not in the past
+  if (v.length === 10) {
+    const parts = v.split('/');
+    if (parts.length === 3) {
+      const entered = new Date(parts[2], parts[1]-1, parts[0]);
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      if (entered < today) {
+        el.style.borderColor = 'var(--danger)';
+        el.style.background = '#fff0f0';
+        el.title = 'תאריך תוקף פג – לא ניתן לשמור';
+      } else {
+        el.style.borderColor = 'var(--success)';
+        el.style.background = '#f0fff4';
+        el.title = '';
+      }
+    }
+  } else {
+    el.style.borderColor = '';
+    el.style.background = '';
+    el.title = '';
+  }
 }
 
 function parseDate(str) {
@@ -552,6 +575,28 @@ async function submitData() {
   const prodDateRaw = document.getElementById('productionDate').value;
   if (!prodDateRaw || prodDateRaw.length < 6) {
     toast('הכנס תאריך ייצור', 'error'); return;
+  }
+
+  // Validate no expired dates
+  let hasExpired = false;
+  ingredients.forEach((ing, i) => {
+    const container = document.getElementById(`batches_${i}`);
+    const batches = container.querySelectorAll('.batch-entry');
+    batches.forEach((_, b) => {
+      const exp = document.getElementById(`exp_${i}_${b}`)?.value;
+      if (exp && exp.length === 10) {
+        const parts = exp.split('/');
+        if (parts.length === 3) {
+          const entered = new Date(parts[2], parts[1]-1, parts[0]);
+          const today = new Date(); today.setHours(0,0,0,0);
+          if (entered < today) hasExpired = true;
+        }
+      }
+    });
+  });
+  if (hasExpired) {
+    toast('❌ יש תאריך תוקף שפג! תקן לפני השמירה', 'error');
+    return;
   }
 
   // Build rows – one row per batch per ingredient
