@@ -24,31 +24,18 @@
     --danger: #c0392b;
     --radius: 12px;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-  body {
-    font-family: 'Heebo', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100dvh;
-    overflow-x: hidden;
-  }
+  body { font-family: 'Heebo', sans-serif; background: var(--bg); color: var(--text); min-height: 100dvh; overflow-x: hidden; }
 
   .header {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 20px;
-    display: flex; align-items: center; gap: 12px;
-    position: sticky; top: 0; z-index: 100;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 14px 20px; display: flex; align-items: center; gap: 12px;
+    position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 4px rgba(0,0,0,0.08);
   }
   .header-icon {
     width: 38px; height: 38px;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
+    border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;
   }
   .header h1 { font-size: 18px; font-weight: 700; color: var(--text); }
   .header p  { font-size: 12px; color: var(--text2); }
@@ -56,46 +43,51 @@
   .main { padding: 20px 16px 100px; max-width: 520px; margin: 0 auto; }
 
   .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px; margin-bottom: 16px;
-    animation: fadeUp .3s ease both;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 18px; margin-bottom: 16px;
+    animation: fadeUp .3s ease both; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
   }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(14px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
   .card-title {
     font-size: 13px; font-weight: 700; color: var(--text2);
     text-transform: uppercase; letter-spacing: .05em;
-    margin-bottom: 14px;
-    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
   }
   .card-title span { color: var(--accent); }
+
+  /* DEPARTMENT GRID */
+  .dept-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  }
+  .dept-btn {
+    padding: 12px 8px; background: var(--surface2);
+    border: 1.5px solid var(--border); border-radius: 10px;
+    color: var(--text); font-family: 'Heebo', sans-serif;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: all .15s; text-align: center;
+  }
+  .dept-btn:active { transform: scale(.97); }
+  .dept-btn.selected {
+    background: #fff8ee; border-color: var(--accent); color: var(--accent);
+  }
 
   .scan-btn {
     width: 100%; padding: 18px;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
     border: none; border-radius: var(--radius);
     color: #fff; font-family: 'Heebo', sans-serif;
-    font-size: 17px; font-weight: 700;
-    cursor: pointer; display: flex; align-items: center;
-    justify-content: center; gap: 10px;
-    transition: opacity .15s, transform .1s;
-    margin-bottom: 10px;
+    font-size: 17px; font-weight: 700; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    transition: opacity .15s, transform .1s; margin-bottom: 10px;
   }
   .scan-btn:active { opacity: .85; transform: scale(.98); }
+  .scan-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
 
   .manual-btn {
-    width: 100%; padding: 13px;
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
+    width: 100%; padding: 13px; background: transparent;
+    border: 1px solid var(--border); border-radius: var(--radius);
     color: var(--text2); font-family: 'Heebo', sans-serif;
-    font-size: 14px; cursor: pointer;
-    transition: border-color .15s, color .15s;
+    font-size: 14px; cursor: pointer; transition: border-color .15s, color .15s;
   }
   .manual-btn:hover { border-color: var(--accent); color: var(--accent); }
 
@@ -106,16 +98,20 @@
     background: var(--surface2); border: 1px solid var(--border);
     border-radius: 8px; color: var(--text);
     font-family: 'Heebo', sans-serif; font-size: 15px;
-    transition: border-color .15s;
-    -webkit-appearance: none;
+    transition: border-color .15s, background .15s; -webkit-appearance: none;
   }
   .field input:focus { outline: none; border-color: var(--accent); background: #fff; }
 
+  .dept-display {
+    display: inline-block; background: #fff8ee;
+    border: 1px solid var(--accent); border-radius: 6px;
+    padding: 3px 10px; font-size: 13px; font-weight: 700; color: var(--accent);
+    margin-bottom: 10px;
+  }
+
   .wo-display {
-    background: #fff8ee;
-    border: 1.5px solid var(--accent);
-    border-radius: var(--radius);
-    padding: 14px 18px; margin-bottom: 16px;
+    background: #fff8ee; border: 1.5px solid var(--accent);
+    border-radius: var(--radius); padding: 14px 18px; margin-bottom: 16px;
     display: flex; align-items: center; justify-content: space-between;
   }
   .wo-display .label { font-size: 12px; color: var(--text2); }
@@ -123,16 +119,12 @@
   .wo-display .clear-btn {
     background: none; border: 1px solid var(--border);
     border-radius: 8px; color: var(--text2);
-    padding: 6px 12px; font-size: 12px; cursor: pointer;
-    font-family: 'Heebo', sans-serif;
+    padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: 'Heebo', sans-serif;
   }
 
-  /* ── INGREDIENT ROW ── */
   .ing-row {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px; margin-bottom: 12px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px; margin-bottom: 12px;
     animation: fadeUp .25s ease both;
   }
   .ing-name {
@@ -140,89 +132,73 @@
     display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
   }
   .ing-name .qty-badge {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 2px 8px;
+    background: #fff; border: 1px solid var(--border);
+    border-radius: 6px; padding: 2px 8px;
     font-size: 12px; font-weight: 400; color: var(--text2);
   }
   .batch-entry {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px; margin-bottom: 8px;
+    background: #fff; border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px; margin-bottom: 8px;
   }
   .batch-label {
     font-size: 11px; font-weight: 700; color: var(--text2);
     margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;
   }
   .batch-label .required-tag {
-    background: #fff3e0; color: var(--accent);
-    border: 1px solid #ffe0a0;
+    background: #fff3e0; color: var(--accent); border: 1px solid #ffe0a0;
     border-radius: 4px; padding: 1px 6px; font-size: 10px;
   }
   .batch-label .optional-tag {
-    background: #f0f0f0; color: #999;
-    border: 1px solid #ddd;
+    background: #f0f0f0; color: #999; border: 1px solid #ddd;
     border-radius: 4px; padding: 1px 6px; font-size: 10px;
   }
-  .remove-batch {
-    background: none; border: none; color: var(--danger);
-    font-size: 16px; cursor: pointer; padding: 0 4px;
-  }
+  .remove-batch { background: none; border: none; color: var(--danger); font-size: 16px; cursor: pointer; padding: 0 4px; }
   .ing-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .add-batch-btn {
-    width: 100%; padding: 8px;
-    background: transparent;
-    border: 1px dashed var(--border);
-    border-radius: 8px; color: var(--accent);
-    font-family: 'Heebo', sans-serif; font-size: 13px;
-    cursor: pointer; margin-top: 4px;
+    width: 100%; padding: 8px; background: transparent;
+    border: 1px dashed var(--border); border-radius: 8px; color: var(--accent);
+    font-family: 'Heebo', sans-serif; font-size: 13px; cursor: pointer; margin-top: 4px;
     transition: background .15s;
   }
   .add-batch-btn:hover { background: #fff8ee; }
 
+  .finished-card {
+    background: #f0fff4; border: 1px solid #a8d5b5;
+    border-radius: var(--radius); padding: 14px; margin-bottom: 16px;
+  }
+  .finished-card .card-title { color: var(--success); }
+  .finished-card .card-title span { color: var(--success); }
+  .optional-note { font-size: 11px; color: var(--text2); margin-top: 4px; }
+
   .submit-btn {
-    width: 100%; padding: 18px;
-    background: var(--success);
+    width: 100%; padding: 18px; background: var(--success);
     border: none; border-radius: var(--radius);
-    color: #fff; font-family: 'Heebo', sans-serif;
-    font-size: 17px; font-weight: 700;
-    cursor: pointer; display: flex; align-items: center;
-    justify-content: center; gap: 10px;
-    transition: opacity .15s, transform .1s;
-    margin-top: 8px;
+    color: #fff; font-family: 'Heebo', sans-serif; font-size: 17px; font-weight: 700;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+    transition: opacity .15s, transform .1s; margin-top: 8px;
     box-shadow: 0 2px 8px rgba(45,138,78,0.25);
   }
   .submit-btn:active { opacity: .85; transform: scale(.98); }
   .submit-btn:disabled { opacity: .35; cursor: not-allowed; transform: none; box-shadow: none; }
 
   .modal-overlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,.75);
-    z-index: 200; display: flex;
-    flex-direction: column; align-items: center; justify-content: center;
-    padding: 20px;
+    position: fixed; inset: 0; background: rgba(0,0,0,.75);
+    z-index: 200; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 20px;
   }
   .modal-overlay.hidden { display: none; }
   .camera-box {
-    width: 100%; max-width: 400px;
-    background: var(--surface);
-    border-radius: 16px; overflow: hidden;
-    border: 2px solid var(--accent);
+    width: 100%; max-width: 400px; background: var(--surface);
+    border-radius: 16px; overflow: hidden; border: 2px solid var(--accent);
   }
-  .camera-header {
-    padding: 14px 18px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
+  .camera-header { padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; }
   .camera-header h3 { font-size: 16px; font-weight: 700; }
   .close-cam { background: none; border: none; color: var(--text2); font-size: 22px; cursor: pointer; }
   #camera-viewport { width: 100%; aspect-ratio: 4/3; background: #000; position: relative; overflow: hidden; }
   #camera-viewport video { width: 100%; height: 100%; object-fit: cover; }
   .scan-line {
     position: absolute; left: 10%; right: 10%; top: 50%;
-    height: 2px; background: var(--accent);
-    box-shadow: 0 0 8px var(--accent);
+    height: 2px; background: var(--accent); box-shadow: 0 0 8px var(--accent);
     animation: scanMove 1.8s ease-in-out infinite;
   }
   @keyframes scanMove { 0%,100% { top: 30%; } 50% { top: 70%; } }
@@ -231,12 +207,10 @@
   .toast {
     position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px);
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; padding: 12px 20px;
-    font-size: 14px; font-weight: 500;
+    border-radius: 10px; padding: 12px 20px; font-size: 14px; font-weight: 500;
     opacity: 0; transition: all .3s; pointer-events: none;
     white-space: nowrap; z-index: 300;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-    color: var(--text);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12); color: var(--text);
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   .toast.success { border-color: var(--success); color: var(--success); }
@@ -244,10 +218,8 @@
 
   .loader {
     display: inline-block; width: 18px; height: 18px;
-    border: 2px solid rgba(255,255,255,.4);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: spin .7s linear infinite;
+    border: 2px solid rgba(255,255,255,.4); border-top-color: #fff;
+    border-radius: 50%; animation: spin .7s linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -259,20 +231,17 @@
   .step.active { background: var(--accent); }
   .step.done   { background: var(--success); }
 
-  .manual-area { display: flex; gap: 8px; }
+  .manual-area { display: flex; gap: 8px; margin-top: 12px; }
   .manual-area input {
-    flex: 1; padding: 12px 14px;
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 8px; color: var(--text);
+    flex: 1; padding: 12px 14px; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 8px; color: var(--text);
     font-family: 'Heebo', sans-serif; font-size: 15px;
   }
   .manual-area input:focus { outline: none; border-color: var(--accent); }
   .manual-area button {
-    padding: 12px 16px;
-    background: var(--accent); border: none;
-    border-radius: 8px; color: #fff;
-    font-family: 'Heebo', sans-serif; font-weight: 700;
-    cursor: pointer; white-space: nowrap;
+    padding: 12px 16px; background: var(--accent); border: none;
+    border-radius: 8px; color: #fff; font-family: 'Heebo', sans-serif;
+    font-weight: 700; cursor: pointer; white-space: nowrap;
   }
 </style>
 </head>
@@ -282,7 +251,7 @@
   <div class="header-icon">🏭</div>
   <div>
     <h1>מעקב ייצור</h1>
-    <p>סריקה ותיעוד חומרי גלם</p>
+    <p id="headerDept">בחר מחלקה להתחלה</p>
   </div>
 </div>
 
@@ -304,14 +273,26 @@
     <div class="step active" id="step1"></div>
     <div class="step" id="step2"></div>
     <div class="step" id="step3"></div>
+    <div class="step" id="step4"></div>
   </div>
 
-  <div id="sectionScan">
+  <!-- STEP 1: DEPARTMENT -->
+  <div id="sectionDept">
     <div class="card">
-      <div class="card-title"><span>01</span> סריקת פקודת עבודה</div>
-      <button class="scan-btn" onclick="startCamera()"><span>📷</span> סרוק ברקוד</button>
+      <div class="card-title"><span>01</span> בחר מחלקה</div>
+      <div class="dept-grid" id="deptGrid"></div>
+    </div>
+  </div>
+
+  <!-- STEP 2: SCAN -->
+  <div id="sectionScan" style="display:none;">
+    <div class="card">
+      <div class="card-title"><span>02</span> סריקת פקודת עבודה</div>
+      <div class="dept-display" id="selectedDeptLabel"></div>
+      <br><br>
+      <button class="scan-btn" id="scanBtn" onclick="startCamera()"><span>📷</span> סרוק ברקוד</button>
       <button class="manual-btn" onclick="toggleManual()">✏️ הזנה ידנית</button>
-      <div id="manualArea" style="display:none; margin-top:12px;">
+      <div id="manualArea" style="display:none;">
         <div class="manual-area">
           <input type="text" id="manualWO" placeholder="מספר פקודת עבודה" inputmode="text">
           <button onclick="loadWorkOrder(document.getElementById('manualWO').value)">טען</button>
@@ -320,6 +301,7 @@
     </div>
   </div>
 
+  <!-- STEP 3: DATE -->
   <div id="sectionDate" style="display:none;">
     <div class="wo-display">
       <div>
@@ -329,23 +311,37 @@
       <button class="clear-btn" onclick="resetAll()">איפוס</button>
     </div>
     <div class="card">
-      <div class="card-title"><span>02</span> תאריך ייצור</div>
+      <div class="card-title"><span>03</span> תאריך ייצור</div>
       <div class="field">
         <label>תאריך ייצור (DD/MM/YYYY)</label>
-        <input type="text" id="productionDate" placeholder="06/04/2026"
+        <input type="text" id="productionDate" placeholder="25/04/2026"
           inputmode="numeric" maxlength="10"
           oninput="formatDateInput(this); checkReady()">
       </div>
     </div>
   </div>
 
+  <!-- STEP 4: INGREDIENTS -->
   <div id="sectionIngredients" style="display:none;">
     <div class="card">
-      <div class="card-title"><span>03</span> חומרי גלם</div>
+      <div class="card-title"><span>04</span> חומרי גלם</div>
       <div id="ingredientsList">
         <div class="empty"><div class="icon">⏳</div>טוען נתונים...</div>
       </div>
     </div>
+
+    <!-- FINISHED PRODUCT EXPIRY -->
+    <div class="finished-card">
+      <div class="card-title"><span>🏷️</span> תאריך תוקף מוצר מוגמר</div>
+      <div class="field" style="margin-bottom:4px;">
+        <label>תאריך תוקף (DD/MM/YYYY)</label>
+        <input type="text" id="finishedExpiry" placeholder="DD/MM/YYYY"
+          inputmode="numeric" maxlength="10"
+          oninput="formatFinishedExpiry(this)">
+      </div>
+      <div class="optional-note">* שדה זה אינו חובה</div>
+    </div>
+
     <button class="submit-btn" id="submitBtn" onclick="submitData()" disabled>
       <span>✅</span> שמור רישום
     </button>
@@ -353,19 +349,52 @@
 </div>
 
 <script>
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxfW9lOqhZW8--XFPYDmb_PX7CZQmi9CjK6gQwjgdoIkUErYSbHt44no9siTGkL-0EU/exec';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbylzazDdXYVdN2epJiudmS7DR_R7bIzjALoL0KP5ZUOMrL9cz81H1pKbZ13J7UIFOI7/exec';
 
+const DEPARTMENTS = [
+  'מאפיה','קונדיטוריה','מטבח','קצביה',
+  'פסטות','לביבות','מחלבה',
+  'מפעל מאפים','אריזה בשרית','אריזת קונדיטוריה','טיפול ירקות'
+];
+
+let currentDept = null;
 let currentWO = null;
 let ingredients = [];
 let scannerRunning = false;
 
+// ── BUILD DEPT GRID ──
+function buildDeptGrid() {
+  const grid = document.getElementById('deptGrid');
+  DEPARTMENTS.forEach(dept => {
+    const btn = document.createElement('button');
+    btn.className = 'dept-btn';
+    btn.textContent = dept;
+    btn.onclick = () => selectDept(dept);
+    grid.appendChild(btn);
+  });
+}
+
+function selectDept(dept) {
+  currentDept = dept;
+  document.querySelectorAll('.dept-btn').forEach(b => {
+    b.classList.toggle('selected', b.textContent === dept);
+  });
+  document.getElementById('selectedDeptLabel').textContent = '📂 ' + dept;
+  document.getElementById('headerDept').textContent = dept;
+  document.getElementById('sectionScan').style.display = 'block';
+  setStep(2);
+  document.getElementById('sectionScan').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ── STEPS ──
 function setStep(n) {
-  [1,2,3].forEach(i => {
+  [1,2,3,4].forEach(i => {
     const el = document.getElementById('step'+i);
     el.className = 'step' + (i < n ? ' done' : i === n ? ' active' : '');
   });
 }
 
+// ── TOAST ──
 function toast(msg, type='') {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -373,6 +402,7 @@ function toast(msg, type='') {
   setTimeout(() => t.className = 'toast', 2800);
 }
 
+// ── CAMERA ──
 function startCamera() {
   document.getElementById('cameraModal').classList.remove('hidden');
   Quagga.init({
@@ -403,12 +433,14 @@ function toggleManual() {
   a.style.display = a.style.display === 'none' ? 'block' : 'none';
 }
 
+// ── LOAD WORK ORDER ──
 async function loadWorkOrder(wo) {
   wo = wo.trim();
   if (!wo) { toast('הכנס מספר פקודת עבודה', 'error'); return; }
+  if (!currentDept) { toast('בחר מחלקה תחילה', 'error'); return; }
   toast('⏳ טוען נתונים...');
   try {
-    const url = `${SHEET_URL}?action=getIngredients&workOrderId=${encodeURIComponent(wo)}`;
+    const url = `${SHEET_URL}?action=getIngredients&workOrderId=${encodeURIComponent(wo)}&department=${encodeURIComponent(currentDept)}`;
     const res = await fetch(url);
     const data = await res.json();
     if (!data.ingredients || data.ingredients.length === 0) {
@@ -427,7 +459,7 @@ async function loadWorkOrder(wo) {
     document.getElementById('sectionDate').style.display = 'block';
     document.getElementById('sectionIngredients').style.display = 'block';
     renderIngredients();
-    setStep(2);
+    setStep(3);
     toast('✅ נטענו ' + ingredients.length + ' חומרי גלם', 'success');
     document.getElementById('sectionDate').scrollIntoView({ behavior: 'smooth' });
   } catch(e) {
@@ -436,6 +468,7 @@ async function loadWorkOrder(wo) {
   }
 }
 
+// ── RENDER INGREDIENTS ──
 function renderIngredients() {
   const list = document.getElementById('ingredientsList');
   list.innerHTML = '';
@@ -460,8 +493,7 @@ function renderIngredients() {
               <label>כמות בפועל</label>
               <input type="number" id="qty_${i}_0" placeholder="כמות"
                 inputmode="decimal" min="0" step="0.01"
-                value="${ing.requiredQty}"
-                oninput="checkReady()">
+                value="${ing.requiredQty}" oninput="checkReady()">
             </div>
             <div class="field" style="margin:0">
               <label>תאריך תוקף</label>
@@ -477,9 +509,10 @@ function renderIngredients() {
     list.appendChild(div);
   });
   checkReady();
-  setStep(3);
+  setStep(4);
 }
 
+// ── BATCH ──
 function addBatch(ingIdx) {
   const container = document.getElementById(`batches_${ingIdx}`);
   const batchNum = container.children.length;
@@ -498,8 +531,7 @@ function addBatch(ingIdx) {
       <div class="field" style="margin:0">
         <label>כמות בפועל</label>
         <input type="number" id="qty_${ingIdx}_${batchNum}" placeholder="כמות"
-          inputmode="decimal" min="0" step="0.01"
-          oninput="checkReady()">
+          inputmode="decimal" min="0" step="0.01" oninput="checkReady()">
       </div>
       <div class="field" style="margin:0">
         <label>תאריך תוקף</label>
@@ -519,19 +551,18 @@ function removeBatch(ingIdx, batchNum) {
   checkReady();
 }
 
+// ── DATE HELPERS ──
 function formatDateInput(el) {
   let v = el.value.replace(/[^0-9]/g, '');
   if (v.length >= 3 && v.length <= 4) v = v.slice(0,2) + '/' + v.slice(2);
   else if (v.length >= 5) v = v.slice(0,2) + '/' + v.slice(2,4) + '/' + v.slice(4,8);
   el.value = v;
 
-  // Validate expiry date is not in the past
   if (v.length === 10) {
     const parts = v.split('/');
     if (parts.length === 3) {
       const entered = new Date(parts[2], parts[1]-1, parts[0]);
-      const today = new Date();
-      today.setHours(0,0,0,0);
+      const today = new Date(); today.setHours(0,0,0,0);
       if (entered < today) {
         el.style.borderColor = 'var(--danger)';
         el.style.background = '#fff0f0';
@@ -549,20 +580,30 @@ function formatDateInput(el) {
   }
 }
 
-function parseDate(str) {
-  const parts = str.split('/');
-  if (parts.length !== 3) return null;
-  const [d, m, y] = parts;
-  if (d.length !== 2 || m.length !== 2 || y.length !== 4) return null;
-  return `${y}-${m}-${d}`;
+function formatFinishedExpiry(el) {
+  let v = el.value.replace(/[^0-9]/g, '');
+  if (v.length >= 3 && v.length <= 4) v = v.slice(0,2) + '/' + v.slice(2);
+  else if (v.length >= 5) v = v.slice(0,2) + '/' + v.slice(2,4) + '/' + v.slice(4,8);
+  el.value = v;
+  if (v.length === 10) {
+    const parts = v.split('/');
+    if (parts.length === 3) {
+      const entered = new Date(parts[2], parts[1]-1, parts[0]);
+      const today = new Date(); today.setHours(0,0,0,0);
+      el.style.borderColor = entered < today ? 'var(--danger)' : 'var(--success)';
+      el.style.background  = entered < today ? '#fff0f0' : '#f0fff4';
+    }
+  } else {
+    el.style.borderColor = '';
+    el.style.background = '';
+  }
 }
 
+// ── CHECK READY ──
 function checkReady() {
   const btn = document.getElementById('submitBtn');
   const prodDate = document.getElementById('productionDate').value;
   if (!prodDate || prodDate.length < 6) { btn.disabled = true; return; }
-
-  // Only check first batch (required) for each ingredient
   const allFilled = ingredients.every((_, i) => {
     const qty = document.getElementById(`qty_${i}_0`)?.value;
     const exp = document.getElementById(`exp_${i}_0`)?.value;
@@ -571,18 +612,16 @@ function checkReady() {
   btn.disabled = !allFilled;
 }
 
+// ── SUBMIT ──
 async function submitData() {
   const prodDateRaw = document.getElementById('productionDate').value;
-  if (!prodDateRaw || prodDateRaw.length < 6) {
-    toast('הכנס תאריך ייצור', 'error'); return;
-  }
+  if (!prodDateRaw || prodDateRaw.length < 6) { toast('הכנס תאריך ייצור', 'error'); return; }
 
-  // Validate no expired dates
+  // Check expired dates
   let hasExpired = false;
   ingredients.forEach((ing, i) => {
     const container = document.getElementById(`batches_${i}`);
-    const batches = container.querySelectorAll('.batch-entry');
-    batches.forEach((_, b) => {
+    container.querySelectorAll('.batch-entry').forEach((_, b) => {
       const exp = document.getElementById(`exp_${i}_${b}`)?.value;
       if (exp && exp.length === 10) {
         const parts = exp.split('/');
@@ -594,33 +633,38 @@ async function submitData() {
       }
     });
   });
-  if (hasExpired) {
-    toast('❌ יש תאריך תוקף שפג! תקן לפני השמירה', 'error');
-    return;
+
+  // Check finished product expiry if filled
+  const finExp = document.getElementById('finishedExpiry').value;
+  if (finExp && finExp.length === 10) {
+    const parts = finExp.split('/');
+    if (parts.length === 3) {
+      const entered = new Date(parts[2], parts[1]-1, parts[0]);
+      const today = new Date(); today.setHours(0,0,0,0);
+      if (entered < today) hasExpired = true;
+    }
   }
 
-  // Build rows – one row per batch per ingredient
+  if (hasExpired) { toast('❌ יש תאריך תוקף שפג! תקן לפני השמירה', 'error'); return; }
+
+  // Build rows
   const rows = [];
   ingredients.forEach((ing, i) => {
     const container = document.getElementById(`batches_${i}`);
-    const batches = container.querySelectorAll('.batch-entry');
-    batches.forEach((_, b) => {
+    container.querySelectorAll('.batch-entry').forEach((_, b) => {
       const qty = document.getElementById(`qty_${i}_${b}`)?.value;
       const exp = document.getElementById(`exp_${i}_${b}`)?.value;
-      // Skip empty optional batches
       if (b > 0 && (!qty || !exp)) return;
-      rows.push({
-        material: ing.material,
-        qty: qty || '',
-        expiryDate: exp || ''
-      });
+      rows.push({ material: ing.material, qty: qty || '', expiryDate: exp || '' });
     });
   });
 
   const payload = {
     action: 'saveProduction',
     workOrderId: currentWO,
+    department: currentDept,
     productionDate: prodDateRaw,
+    finishedProductExpiry: finExp || '',
     ingredients: rows
   };
 
@@ -646,19 +690,29 @@ async function submitData() {
   }
 }
 
+// ── RESET ──
 function resetAll() {
   currentWO = null;
   ingredients = [];
+  currentDept = null;
+  document.querySelectorAll('.dept-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('sectionScan').style.display = 'none';
   document.getElementById('sectionDate').style.display = 'none';
   document.getElementById('sectionIngredients').style.display = 'none';
   document.getElementById('ingredientsList').innerHTML = '';
   document.getElementById('manualArea').style.display = 'none';
   document.getElementById('manualWO').value = '';
+  document.getElementById('finishedExpiry').value = '';
+  document.getElementById('finishedExpiry').style.borderColor = '';
+  document.getElementById('finishedExpiry').style.background = '';
   document.getElementById('submitBtn').innerHTML = '<span>✅</span> שמור רישום';
+  document.getElementById('headerDept').textContent = 'בחר מחלקה להתחלה';
   setStep(1);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// ── INIT ──
+buildDeptGrid();
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('productionDate').addEventListener('input', checkReady);
 });
