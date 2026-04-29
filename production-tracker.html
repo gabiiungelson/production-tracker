@@ -29,15 +29,21 @@
 
   .header {
     background: var(--surface); border-bottom: 1px solid var(--border);
-    padding: 14px 20px; display: flex; align-items: center; gap: 12px;
+    padding: 12px 20px; display: flex; align-items: center; gap: 12px;
     position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 4px rgba(0,0,0,0.08);
   }
   .header-icon {
     width: 38px; height: 38px;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
     border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;
+    flex-shrink: 0;
   }
-  .header h1 { font-size: 18px; font-weight: 700; color: var(--text); }
+  .header-text { min-width: 0; }
+  .header h1 { font-size: 17px; font-weight: 700; color: var(--text); }
+  .header-product {
+    font-size: 13px; font-weight: 700; color: var(--accent);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
   .header p  { font-size: 12px; color: var(--text2); }
 
   .main { padding: 20px 16px 100px; max-width: 520px; margin: 0 auto; }
@@ -55,10 +61,7 @@
   }
   .card-title span { color: var(--accent); }
 
-  /* DEPARTMENT GRID */
-  .dept-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-  }
+  .dept-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .dept-btn {
     padding: 12px 8px; background: var(--surface2);
     border: 1.5px solid var(--border); border-radius: 10px;
@@ -67,9 +70,7 @@
     transition: all .15s; text-align: center;
   }
   .dept-btn:active { transform: scale(.97); }
-  .dept-btn.selected {
-    background: #fff8ee; border-color: var(--accent); color: var(--accent);
-  }
+  .dept-btn.selected { background: #fff8ee; border-color: var(--accent); color: var(--accent); }
 
   .scan-btn {
     width: 100%; padding: 18px;
@@ -81,7 +82,6 @@
     transition: opacity .15s, transform .1s; margin-bottom: 10px;
   }
   .scan-btn:active { opacity: .85; transform: scale(.98); }
-  .scan-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
 
   .manual-btn {
     width: 100%; padding: 13px; background: transparent;
@@ -101,6 +101,7 @@
     transition: border-color .15s, background .15s; -webkit-appearance: none;
   }
   .field input:focus { outline: none; border-color: var(--accent); background: #fff; }
+  .field input[readonly] { opacity: .7; background: #f0f0f0; cursor: default; }
 
   .dept-display {
     display: inline-block; background: #fff8ee;
@@ -112,13 +113,18 @@
   .wo-display {
     background: #fff8ee; border: 1.5px solid var(--accent);
     border-radius: var(--radius); padding: 14px 18px; margin-bottom: 16px;
-    display: flex; align-items: center; justify-content: space-between;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
   }
+  .wo-display .wo-info { min-width: 0; }
   .wo-display .label { font-size: 12px; color: var(--text2); }
-  .wo-display .value { font-size: 22px; font-weight: 900; color: var(--accent); }
+  .wo-display .value { font-size: 20px; font-weight: 900; color: var(--accent); }
+  .wo-display .product-name {
+    font-size: 13px; font-weight: 700; color: var(--text);
+    margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
   .wo-display .clear-btn {
     background: none; border: 1px solid var(--border);
-    border-radius: 8px; color: var(--text2);
+    border-radius: 8px; color: var(--text2); flex-shrink: 0;
     padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: 'Heebo', sans-serif;
   }
 
@@ -128,8 +134,12 @@
     animation: fadeUp .25s ease both;
   }
   .ing-name {
-    font-size: 15px; font-weight: 700; margin-bottom: 12px;
+    font-size: 15px; font-weight: 700; margin-bottom: 4px;
     display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .ing-sku {
+    font-size: 11px; color: var(--text2); margin-bottom: 10px;
+    font-weight: 500;
   }
   .ing-name .qty-badge {
     background: #fff; border: 1px solid var(--border);
@@ -249,8 +259,9 @@
 
 <div class="header">
   <div class="header-icon">🏭</div>
-  <div>
+  <div class="header-text">
     <h1>מעקב ייצור</h1>
+    <div class="header-product" id="headerProduct" style="display:none"></div>
     <p id="headerDept">בחר מחלקה להתחלה</p>
   </div>
 </div>
@@ -290,7 +301,7 @@
       <div class="card-title"><span>02</span> סריקת פקודת עבודה</div>
       <div class="dept-display" id="selectedDeptLabel"></div>
       <br><br>
-      <button class="scan-btn" id="scanBtn" onclick="startCamera()"><span>📷</span> סרוק ברקוד</button>
+      <button class="scan-btn" onclick="startCamera()"><span>📷</span> סרוק ברקוד</button>
       <button class="manual-btn" onclick="toggleManual()">✏️ הזנה ידנית</button>
       <div id="manualArea" style="display:none;">
         <div class="manual-area">
@@ -304,9 +315,10 @@
   <!-- STEP 3: DATE -->
   <div id="sectionDate" style="display:none;">
     <div class="wo-display">
-      <div>
+      <div class="wo-info">
         <div class="label">פקודת עבודה</div>
         <div class="value" id="woLabel">-</div>
+        <div class="product-name" id="woProductName"></div>
       </div>
       <button class="clear-btn" onclick="resetAll()">איפוס</button>
     </div>
@@ -325,9 +337,7 @@
   <div id="sectionIngredients" style="display:none;">
     <div class="card">
       <div class="card-title"><span>04</span> חומרי גלם</div>
-      <div id="ingredientsList">
-        <div class="empty"><div class="icon">⏳</div>טוען נתונים...</div>
-      </div>
+      <div id="ingredientsList"></div>
     </div>
 
     <!-- FINISHED PRODUCT EXPIRY -->
@@ -349,7 +359,7 @@
 </div>
 
 <script>
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbylzazDdXYVdN2epJiudmS7DR_R7bIzjALoL0KP5ZUOMrL9cz81H1pKbZ13J7UIFOI7/exec';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwoN79ceNREBrPqCirbgnVQPb9jwhWcNO8sQdr5hNEgfi00jZ3fwPcptZALipsieWM_/exec';
 
 const DEPARTMENTS = [
   'מאפיה','קונדיטוריה','מטבח','קצביה',
@@ -359,10 +369,10 @@ const DEPARTMENTS = [
 
 let currentDept = null;
 let currentWO = null;
+let currentProductName = '';
 let ingredients = [];
 let scannerRunning = false;
 
-// ── BUILD DEPT GRID ──
 function buildDeptGrid() {
   const grid = document.getElementById('deptGrid');
   DEPARTMENTS.forEach(dept => {
@@ -386,7 +396,6 @@ function selectDept(dept) {
   document.getElementById('sectionScan').scrollIntoView({ behavior: 'smooth' });
 }
 
-// ── STEPS ──
 function setStep(n) {
   [1,2,3,4].forEach(i => {
     const el = document.getElementById('step'+i);
@@ -394,7 +403,6 @@ function setStep(n) {
   });
 }
 
-// ── TOAST ──
 function toast(msg, type='') {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -402,7 +410,6 @@ function toast(msg, type='') {
   setTimeout(() => t.className = 'toast', 2800);
 }
 
-// ── CAMERA ──
 function startCamera() {
   document.getElementById('cameraModal').classList.remove('hidden');
   Quagga.init({
@@ -433,7 +440,6 @@ function toggleManual() {
   a.style.display = a.style.display === 'none' ? 'block' : 'none';
 }
 
-// ── LOAD WORK ORDER ──
 async function loadWorkOrder(wo) {
   wo = wo.trim();
   if (!wo) { toast('הכנס מספר פקודת עבודה', 'error'); return; }
@@ -447,8 +453,17 @@ async function loadWorkOrder(wo) {
       toast('לא נמצאו חומרי גלם לפקודה זו', 'error'); return;
     }
     currentWO = wo;
+    currentProductName = data.productName || '';
     ingredients = data.ingredients;
+
     document.getElementById('woLabel').textContent = wo;
+    document.getElementById('woProductName').textContent = currentProductName ? '📦 ' + currentProductName : '';
+
+    // Header
+    if (currentProductName) {
+      document.getElementById('headerProduct').textContent = '📦 ' + currentProductName;
+      document.getElementById('headerProduct').style.display = 'block';
+    }
 
     const now = new Date();
     const dd = String(now.getDate()).padStart(2,'0');
@@ -468,7 +483,6 @@ async function loadWorkOrder(wo) {
   }
 }
 
-// ── RENDER INGREDIENTS ──
 function renderIngredients() {
   const list = document.getElementById('ingredientsList');
   list.innerHTML = '';
@@ -482,6 +496,7 @@ function renderIngredients() {
         🧪 ${ing.material}
         <span class="qty-badge">נדרש: ${ing.requiredQty}</span>
       </div>
+      ${ing.sku ? `<div class="ing-sku">מק"ט: ${ing.sku}</div>` : ''}
       <div id="batches_${i}">
         <div class="batch-entry" id="batch_${i}_0">
           <div class="batch-label">
@@ -512,7 +527,6 @@ function renderIngredients() {
   setStep(4);
 }
 
-// ── BATCH ──
 function addBatch(ingIdx) {
   const container = document.getElementById(`batches_${ingIdx}`);
   const batchNum = container.children.length;
@@ -551,33 +565,25 @@ function removeBatch(ingIdx, batchNum) {
   checkReady();
 }
 
-// ── DATE HELPERS ──
 function formatDateInput(el) {
   let v = el.value.replace(/[^0-9]/g, '');
   if (v.length >= 3 && v.length <= 4) v = v.slice(0,2) + '/' + v.slice(2);
   else if (v.length >= 5) v = v.slice(0,2) + '/' + v.slice(2,4) + '/' + v.slice(4,8);
   el.value = v;
-
   if (v.length === 10) {
     const parts = v.split('/');
     if (parts.length === 3) {
       const entered = new Date(parts[2], parts[1]-1, parts[0]);
       const today = new Date(); today.setHours(0,0,0,0);
       if (entered < today) {
-        el.style.borderColor = 'var(--danger)';
-        el.style.background = '#fff0f0';
-        el.title = 'תאריך תוקף פג – לא ניתן לשמור';
+        el.style.borderColor = 'var(--danger)'; el.style.background = '#fff0f0';
+        el.title = 'תאריך תוקף פג';
       } else {
-        el.style.borderColor = 'var(--success)';
-        el.style.background = '#f0fff4';
+        el.style.borderColor = 'var(--success)'; el.style.background = '#f0fff4';
         el.title = '';
       }
     }
-  } else {
-    el.style.borderColor = '';
-    el.style.background = '';
-    el.title = '';
-  }
+  } else { el.style.borderColor = ''; el.style.background = ''; el.title = ''; }
 }
 
 function formatFinishedExpiry(el) {
@@ -593,13 +599,9 @@ function formatFinishedExpiry(el) {
       el.style.borderColor = entered < today ? 'var(--danger)' : 'var(--success)';
       el.style.background  = entered < today ? '#fff0f0' : '#f0fff4';
     }
-  } else {
-    el.style.borderColor = '';
-    el.style.background = '';
-  }
+  } else { el.style.borderColor = ''; el.style.background = ''; }
 }
 
-// ── CHECK READY ──
 function checkReady() {
   const btn = document.getElementById('submitBtn');
   const prodDate = document.getElementById('productionDate').value;
@@ -612,12 +614,10 @@ function checkReady() {
   btn.disabled = !allFilled;
 }
 
-// ── SUBMIT ──
 async function submitData() {
   const prodDateRaw = document.getElementById('productionDate').value;
   if (!prodDateRaw || prodDateRaw.length < 6) { toast('הכנס תאריך ייצור', 'error'); return; }
 
-  // Check expired dates
   let hasExpired = false;
   ingredients.forEach((ing, i) => {
     const container = document.getElementById(`batches_${i}`);
@@ -634,7 +634,6 @@ async function submitData() {
     });
   });
 
-  // Check finished product expiry if filled
   const finExp = document.getElementById('finishedExpiry').value;
   if (finExp && finExp.length === 10) {
     const parts = finExp.split('/');
@@ -647,7 +646,6 @@ async function submitData() {
 
   if (hasExpired) { toast('❌ יש תאריך תוקף שפג! תקן לפני השמירה', 'error'); return; }
 
-  // Build rows
   const rows = [];
   ingredients.forEach((ing, i) => {
     const container = document.getElementById(`batches_${i}`);
@@ -655,7 +653,7 @@ async function submitData() {
       const qty = document.getElementById(`qty_${i}_${b}`)?.value;
       const exp = document.getElementById(`exp_${i}_${b}`)?.value;
       if (b > 0 && (!qty || !exp)) return;
-      rows.push({ material: ing.material, qty: qty || '', expiryDate: exp || '' });
+      rows.push({ material: ing.material, sku: ing.sku || '', qty: qty || '', expiryDate: exp || '' });
     });
   });
 
@@ -663,6 +661,7 @@ async function submitData() {
     action: 'saveProduction',
     workOrderId: currentWO,
     department: currentDept,
+    productName: currentProductName,
     productionDate: prodDateRaw,
     finishedProductExpiry: finExp || '',
     ingredients: rows
@@ -690,11 +689,8 @@ async function submitData() {
   }
 }
 
-// ── RESET ──
 function resetAll() {
-  currentWO = null;
-  ingredients = [];
-  currentDept = null;
+  currentWO = null; currentProductName = ''; ingredients = []; currentDept = null;
   document.querySelectorAll('.dept-btn').forEach(b => b.classList.remove('selected'));
   document.getElementById('sectionScan').style.display = 'none';
   document.getElementById('sectionDate').style.display = 'none';
@@ -707,11 +703,12 @@ function resetAll() {
   document.getElementById('finishedExpiry').style.background = '';
   document.getElementById('submitBtn').innerHTML = '<span>✅</span> שמור רישום';
   document.getElementById('headerDept').textContent = 'בחר מחלקה להתחלה';
+  document.getElementById('headerProduct').style.display = 'none';
+  document.getElementById('headerProduct').textContent = '';
   setStep(1);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ── INIT ──
 buildDeptGrid();
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('productionDate').addEventListener('input', checkReady);
