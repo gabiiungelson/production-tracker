@@ -63,11 +63,12 @@
 
   .dept-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .dept-btn {
-    padding: 12px 8px; background: var(--surface2);
+    padding: 14px 8px; background: var(--surface2);
     border: 1.5px solid var(--border); border-radius: 10px;
     color: var(--text); font-family: 'Heebo', sans-serif;
     font-size: 13px; font-weight: 600; cursor: pointer;
     transition: all .15s; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
   }
   .dept-btn:active { transform: scale(.97); }
   .dept-btn.selected { background: #fff8ee; border-color: var(--accent); color: var(--accent); }
@@ -362,9 +363,17 @@
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwoN79ceNREBrPqCirbgnVQPb9jwhWcNO8sQdr5hNEgfi00jZ3fwPcptZALipsieWM_/exec';
 
 const DEPARTMENTS = [
-  'מאפיה','קונדיטוריה','מטבח','קצביה',
-  'פסטות','לביבות','מחלבה',
-  'מפעל מאפים','אריזה בשרית','אריזת קונדיטוריה','טיפול ירקות'
+  { name: 'מאפיה',             icon: '🍞' },
+  { name: 'קונדיטוריה',        icon: '🎂' },
+  { name: 'מטבח',              icon: '🍳' },
+  { name: 'קצביה',             icon: '🥩' },
+  { name: 'פסטות',             icon: '🍝' },
+  { name: 'לביבות',            icon: '🥞' },
+  { name: 'מחלבה',             icon: '🥛' },
+  { name: 'מפעל מאפים',        icon: '🥐' },
+  { name: 'אריזה בשרית',       icon: '📦' },
+  { name: 'אריזת קונדיטוריה',  icon: '🎁' },
+  { name: 'טיפול ירקות',       icon: '🥦' },
 ];
 
 let currentDept = null;
@@ -378,8 +387,9 @@ function buildDeptGrid() {
   DEPARTMENTS.forEach(dept => {
     const btn = document.createElement('button');
     btn.className = 'dept-btn';
-    btn.textContent = dept;
-    btn.onclick = () => selectDept(dept);
+    btn.innerHTML = `<div style="font-size:24px;margin-bottom:4px">${dept.icon}</div><div>${dept.name}</div>`;
+    btn.dataset.name = dept.name;
+    btn.onclick = () => selectDept(dept.name);
     grid.appendChild(btn);
   });
 }
@@ -387,9 +397,11 @@ function buildDeptGrid() {
 function selectDept(dept) {
   currentDept = dept;
   document.querySelectorAll('.dept-btn').forEach(b => {
-    b.classList.toggle('selected', b.textContent === dept);
+    b.classList.toggle('selected', b.dataset.name === dept);
   });
-  document.getElementById('selectedDeptLabel').textContent = '📂 ' + dept;
+  const deptObj = DEPARTMENTS.find(d => d.name === dept);
+  const icon = deptObj ? deptObj.icon : '📂';
+  document.getElementById('selectedDeptLabel').textContent = icon + ' ' + dept;
   document.getElementById('headerDept').textContent = dept;
   document.getElementById('sectionScan').style.display = 'block';
   setStep(2);
