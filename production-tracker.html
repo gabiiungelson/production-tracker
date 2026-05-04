@@ -341,16 +341,23 @@
       <div id="ingredientsList"></div>
     </div>
 
-    <!-- FINISHED PRODUCT EXPIRY -->
+    <!-- FINISHED PRODUCT EXPIRY + QTY -->
     <div class="finished-card">
-      <div class="card-title"><span>🏷️</span> תאריך תוקף מוצר מוגמר</div>
-      <div class="field" style="margin-bottom:4px;">
-        <label>תאריך תוקף (DD/MM/YYYY)</label>
-        <input type="text" id="finishedExpiry" placeholder="DD/MM/YYYY"
-          inputmode="numeric" maxlength="10"
-          oninput="formatFinishedExpiry(this)">
+      <div class="card-title"><span>🏷️</span> מוצר מוגמר</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:4px;">
+        <div class="field" style="margin:0">
+          <label>תאריך תוקף (DD/MM/YYYY)</label>
+          <input type="text" id="finishedExpiry" placeholder="DD/MM/YYYY"
+            inputmode="numeric" maxlength="10"
+            oninput="formatFinishedExpiry(this)">
+        </div>
+        <div class="field" style="margin:0">
+          <label>כמות מוצרים סופיים</label>
+          <input type="number" id="finishedQty" placeholder="כמות"
+            inputmode="decimal" min="0" step="1">
+        </div>
       </div>
-      <div class="optional-note">* שדה זה אינו חובה</div>
+      <div class="optional-note">* שדות אלו אינם חובה</div>
     </div>
 
     <button class="submit-btn" id="submitBtn" onclick="submitData()" disabled>
@@ -360,7 +367,7 @@
 </div>
 
 <script>
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwoN79ceNREBrPqCirbgnVQPb9jwhWcNO8sQdr5hNEgfi00jZ3fwPcptZALipsieWM_/exec';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwg4jGj3rORmJiPct6qamY_CGDcmyiRoyXDBp14TLQHl7nXDdWz30VbKFbYjWdVxQOu/exec';
 
 const DEPARTMENTS = [
   { name: 'מאפיה',             icon: '🍞' },
@@ -379,6 +386,7 @@ const DEPARTMENTS = [
 let currentDept = null;
 let currentWO = null;
 let currentProductName = '';
+let currentFinishedQty = '';
 let ingredients = [];
 let scannerRunning = false;
 
@@ -466,6 +474,7 @@ async function loadWorkOrder(wo) {
     }
     currentWO = wo;
     currentProductName = data.productName || '';
+    currentFinishedQty = data.finishedQty !== undefined ? String(data.finishedQty) : '';
     ingredients = data.ingredients;
 
     document.getElementById('woLabel').textContent = wo;
@@ -485,6 +494,8 @@ async function loadWorkOrder(wo) {
 
     document.getElementById('sectionDate').style.display = 'block';
     document.getElementById('sectionIngredients').style.display = 'block';
+    // Auto-fill finished qty
+    document.getElementById('finishedQty').value = currentFinishedQty;
     renderIngredients();
     setStep(3);
     toast('✅ נטענו ' + ingredients.length + ' חומרי גלם', 'success');
@@ -676,6 +687,7 @@ async function submitData() {
     productName: currentProductName,
     productionDate: prodDateRaw,
     finishedProductExpiry: finExp || '',
+    finishedQty: document.getElementById('finishedQty').value || '',
     ingredients: rows
   };
 
@@ -702,7 +714,7 @@ async function submitData() {
 }
 
 function resetAll() {
-  currentWO = null; currentProductName = ''; ingredients = []; currentDept = null;
+  currentWO = null; currentProductName = ''; currentFinishedQty = ''; ingredients = []; currentDept = null;
   document.querySelectorAll('.dept-btn').forEach(b => b.classList.remove('selected'));
   document.getElementById('sectionScan').style.display = 'none';
   document.getElementById('sectionDate').style.display = 'none';
@@ -711,6 +723,7 @@ function resetAll() {
   document.getElementById('manualArea').style.display = 'none';
   document.getElementById('manualWO').value = '';
   document.getElementById('finishedExpiry').value = '';
+  document.getElementById('finishedQty').value = '';
   document.getElementById('finishedExpiry').style.borderColor = '';
   document.getElementById('finishedExpiry').style.background = '';
   document.getElementById('submitBtn').innerHTML = '<span>✅</span> שמור רישום';
